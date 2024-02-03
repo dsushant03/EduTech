@@ -1,0 +1,30 @@
+It is necessary to include all four parameters (err, req, res, next) in error-handling middleware functions, even if you don't use all of them. This is because Express identifies an error-handling middleware by the number of parameters it has. If a middleware has four parameters, Express treats it as an error-handling middleware, and it will be called when there is an error.
+
+______________________________________________________________________________________________________________
+
+logical operators at db level (provided by mongoose):
+
+$eq - equality operator
+$ne - not equal
+$gt - greater than
+$gte - greater than or equal
+$lt - less than
+$lte - less than or equal to
+$in - includes in (range)
+$nin - not in range
+
+______________________________________________________________________________________________________________
+
+CORS stands for Cross-Origin Resource Sharing. It is a security feature implemented by web browsers to restrict web pages from making requests to a different domain than the one that served the web page. This is a critical security mechanism to prevent malicious websites from making unauthorized requests to another domain on behalf of the user.
+
+When a web page makes a request to a different domain (cross-origin request), the browser enforces the Same-Origin Policy, which restricts the request unless the target server explicitly allows it. CORS is the mechanism that allows servers to specify which origins are permitted to access their resources.
+
+Origin: An origin is the combination of the protocol (e.g., http, https), domain, and port. For example, "https://www.example.com" and "http://api.example.com" are different origins.
+
+Cross-Origin Request: When a web page at one origin makes a request to another origin (different domain), it's considered a cross-origin request.
+
+e.g., if I make a post request from my react app (:3000) to my express app (:8080), it throws CORS error.
+
+to get rid of this issue we have a package 'cors' which provides the middleware with same name (cors).
+
+______________________________________________________________________________________________________________
