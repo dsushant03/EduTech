@@ -10,7 +10,7 @@ import axios from 'axios';
 
 function Navbar() {
 
-  const {tab, setTab, isAdmin, cartSize} = useContext(MyContext);
+  const {tab, setTab, isAdmin, cart} = useContext(MyContext);
   const navigate = useNavigate();
 
   const handleTitleClick = ()=>{
@@ -76,7 +76,7 @@ function Navbar() {
                 <>
                   <Person2Icon sx={{cursor:'pointer', mr:'10px'}} onClick={()=>navigate('/user-profile')} fontSize='medium'/>
             
-                  <Badge badgeContent={cartSize} sx={{mr:'12px'}}>
+                  <Badge badgeContent={cart.length} sx={{mr:'12px'}}>
                     <ShoppingCartIcon fontSize="medium" sx={{cursor:'pointer'}}
                       onClick={() => navigate("/cart")} />
                   </Badge>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Box, Typography, Button, Card, CardContent, CardMedia } from '@mui/material'
 import { useContext } from 'react'
@@ -8,8 +8,27 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function CourseCard({data, refresh}) {
 
-    const {isAdmin, cartSize, setCartSize} = useContext(MyContext);
     const navigate = useNavigate();
+
+    // The cart state must be always in sync with the cart in database
+    const {isAdmin, cart, setCart} = useContext(MyContext);
+    const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+    useEffect(()=>{
+        if(cart)
+        {
+            setIsAddedToCart(false);
+            if(cart.length>0)
+            {
+                const objectsInCart = cart.map((e)=>e._id)
+                if(objectsInCart.includes(data._id))
+                {   
+                    setIsAddedToCart(true);
+                }
+            }
+            console.log(cart)
+        }   
+    }, [data, cart]);
 
     const handlePublish = async(data)=>{
 
@@ -22,14 +41,24 @@ function CourseCard({data, refresh}) {
         // console.log(resp)
     }
 
-    const handleAddToCart = async(productId, userId)=>{
-        setCartSize(cartSize+1);
+    const handleAddToCart = async(product, userId)=>{
+        // setCartSize(cartSize+1);
         const resp = await axios.post("http://localhost:8080/addToCart",{
-            productId,
+            productId: product._id,
             userId
         })
         // console.log(resp)
+
+        setCart(()=>[...cart, product]);
     }
+
+    const handleRemoveFromCart = async(id)=>{
+        const res = await axios.delete(`http://localhost:8080/deleteItem?itemId=${id}`)
+        setIsAddedToCart(false);
+
+        const newCart = cart.filter((e)=>(e._id != id))
+        setCart(newCart);
+      }
 
     const deleteProduct = async()=>{
         const resp = await axios.delete(`http://localhost:8080/deleteProduct?id=${data._id}`);
@@ -92,9 +121,13 @@ function CourseCard({data, refresh}) {
                     <Button variant='outlined'
                         onClick={()=>handlePublish(data)}>{publishText}</Button>
                     </Box> :
+                    isAddedToCart ?
+                    <Button variant='outlined' sx={{ml:'195px'}} color='error'
+                        onClick={()=>handleRemoveFromCart(data._id)}> 
+                        Remove</Button>:
                     <Button variant='outlined' sx={{ml:'157px'}} 
-                        onClick={()=>handleAddToCart(data._id, sessionStorage.user)}> 
-                        Add to cart</Button>
+                        onClick={()=>handleAddToCart(data, sessionStorage.user)}> 
+                        Add to cart</Button> 
                 }
             </CardContent>
         </Card>

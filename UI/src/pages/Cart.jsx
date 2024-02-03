@@ -9,13 +9,12 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 function Cart() {
 
-  const [cart, setCart] = useState([]);
   const [date, setDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
   const [modal, setModal] = useState(false);
   const [orderId, setOrderId] = useState('');
 
-  const {cartSize, setCartSize} = useContext(MyContext);
+  const {cart, setCart} = useContext(MyContext);
 
   const navigate = useNavigate();
   const placeOrder = async ()=>{
@@ -33,12 +32,10 @@ function Cart() {
       userId: sessionStorage.user
     })
 
-    setCartSize(0);
     setModal(true);
   }
 
   const deleteItem = async(id)=>{
-    setCartSize(cartSize-1);
     const res = await axios.delete(`http://localhost:8080/deleteItem?itemId=${id}`)
     getData();
   }
@@ -47,6 +44,7 @@ function Cart() {
     const res = await axios.post("http://localhost:8080/getCart",{
       userId: sessionStorage.user
     })
+    console.log(res.data.cartObjects)
     setCart(res.data.cartObjects);
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

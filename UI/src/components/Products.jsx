@@ -3,9 +3,12 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { Container, Grid, Fab, Box, Typography} from '@mui/material';
 import CourseCard from './CourseCard';
+import { MyContext } from '../contexts/MyContext';
+import { useContext } from 'react';
 
 function Products() {
 
+  const {cart, setCart} = useContext(MyContext);
   const limitPerPage = 3;
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
@@ -21,6 +24,18 @@ function Products() {
     setPages(Array(Math.ceil(resp.data.totalProducts/limitPerPage)).fill(0));
     setStart(1+(currentPage-1)*limitPerPage);
     setEnd((currentPage-1)*limitPerPage + resp.data.products.length);
+
+    if(sessionStorage.role === 'user')
+    {
+        const res = await axios.post("http://localhost:8080/getCart",{
+            userId: sessionStorage.user
+        })
+
+        if(res.data?.success)
+        {
+            setCart(res.data.cartObjects)
+        }
+    }
   }
 
   useEffect(()=>{
