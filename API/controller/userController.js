@@ -37,7 +37,11 @@ const loginController = asyncHandler(async(req, res, next)=>{
         throw new Error("User does not exist, please signup to create user");
     }
 
-    if(checkUser[0].sessionId.length > 100)
+    // under construction.
+    // works for normal logout case.
+    // yet to handle the case where user closes tab abruptly.
+    // limit set to 1000 to avoid potential login errors 
+    if(checkUser[0].sessionId.length > 1000)
     {
         res.status(400);
         throw new Error('User already logged in from two device');
@@ -252,7 +256,7 @@ const clearCartController = asyncHandler(async(req, res, next)=>{
     }
 })
 
-const deleteItemController = asyncHandler(async(req, res, next)=>{
+const removeItemFromCartController = asyncHandler(async(req, res, next)=>{
     const {userId} = req.body;
     const {itemId} = req.query;
 
@@ -416,4 +420,4 @@ async function generateRefreshToken(id, role)
 }
 
 
-module.exports = {getAllUsersController, updateController, deleteController, loginController, addToCartController, getCartController, placeOrderController, clearCartController, getOrdersController, refreshTokenController, logoutController, deleteItemController};
+module.exports = {getAllUsersController, updateController, deleteController, loginController, addToCartController, getCartController, placeOrderController, clearCartController, getOrdersController, refreshTokenController, logoutController, removeItemFromCartController};

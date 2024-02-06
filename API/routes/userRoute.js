@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {getAllUsersController, updateController, deleteController, loginController, addToCartController, getCartController, placeOrderController, clearCartController, getOrdersController, refreshTokenController, logoutController, deleteItemController} = require('../controller/userController');
+const {getAllUsersController, updateController, deleteController, loginController, addToCartController, getCartController, placeOrderController, clearCartController, getOrdersController, refreshTokenController, logoutController, removeItemFromCartController} = require('../controller/userController');
 
 router.get('/getAllUsers', getAllUsersController);
 
@@ -21,10 +21,10 @@ router.post('/placeOrder', placeOrderController);
 
 router.post('/clearCart', clearCartController);
 
-router.post('/getOrders', getOrdersController);
+router.get('/getOrders', getOrdersController);
 
 router.post('/refreshToken', refreshTokenController);
 
-router.delete('/deleteItem', deleteItemController);
+router.delete('/removeItemFromCart', removeItemFromCartController);
 
 module.exports = router;

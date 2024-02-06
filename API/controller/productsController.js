@@ -74,6 +74,7 @@ const getProductsController = asyncHandler(async(req, res, next)=>{
         if(role === "admin")
         {
             data = await productsModel.find().skip(skip).limit(limitPerPage);
+            
             total = await productsModel.find().count();
         }
         else
@@ -97,6 +98,7 @@ const getProductsController = asyncHandler(async(req, res, next)=>{
 
 const updateController = asyncHandler(async(req, res, next)=>{
     const {data} = req.body;
+    console.log(req.body)
     // console.log(req.file)
     if(!data._id)
     {
